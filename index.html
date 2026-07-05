@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naveen Nandam — Backend Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1720;
+    --panel:#172230;
+    --panel-2:#1D2A3A;
+    --steel:#5B6D80;
+    --paper:#E9E4DA;
+    --amber:#E8A33D;
+    --cyan:#5FB8B8;
+    --line: rgba(233,228,218,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit;}
+
+  ::selection{background:var(--amber); color:var(--ink);}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{outline:2px solid var(--amber); outline-offset:3px;}
+
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+
+  /* NAV */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(15,23,32,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:16px 24px; max-width:920px; margin:0 auto;
+  }
+  .nav-id{font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:0.05em; color:var(--paper);}
+  .nav-id span{color:var(--amber);}
+  .nav-links{display:flex; gap:28px; list-style:none;}
+  .nav-links a{
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.08em;
+    text-transform:uppercase; text-decoration:none; color:var(--steel);
+    transition:color .2s ease;
+  }
+  .nav-links a:hover{color:var(--amber);}
+  @media(max-width:640px){ .nav-links{gap:16px;} .nav-links span.hide-sm{display:none;} }
+
+  /* HERO / STATUS PANEL */
+  .hero{padding:72px 0 40px;}
+  .status-line{
+    display:flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--cyan); margin-bottom:28px;
+  }
+  .dot{
+    width:8px; height:8px; border-radius:50%; background:var(--amber);
+    box-shadow:0 0 0 0 rgba(232,163,61,0.6);
+    animation:pulse 2.2s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(232,163,61,0.55); }
+    70%{ box-shadow:0 0 0 9px rgba(232,163,61,0); }
+    100%{ box-shadow:0 0 0 0 rgba(232,163,61,0); }
+  }
+  @media (prefers-reduced-motion: reduce){ .dot{animation:none;} }
+
+  h1.name{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:clamp(32px, 6vw, 52px);
+    letter-spacing:-0.01em;
+    line-height:1.05;
+    margin-bottom:10px;
+  }
+  .role{
+    font-size:clamp(16px,2.4vw,20px);
+    color:var(--paper);
+    font-weight:500;
+    margin-bottom:28px;
+  }
+  .role .accent{color:var(--amber);}
+
+  .readout{
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:6px;
+    padding:18px 20px;
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+  }
+  @media(max-width:640px){ .readout{grid-template-columns:1fr;} }
+  .readout .field{border-left:2px solid var(--amber); padding-left:12px;}
+  .readout .label{font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--steel); margin-bottom:4px;}
+  .readout .val{font-family:'JetBrains Mono', monospace; font-size:14px; color:var(--paper);}
+
+  .summary{margin-top:32px; max-width:640px; color:#C9C3B6; font-size:15.5px;}
+
+  .cta-row{margin-top:32px; display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:0.04em;
+    padding:12px 20px; border-radius:4px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--amber); color:var(--ink); font-weight:600;}
+  .btn-primary:hover{transform:translateY(-1px); background:#f0ad4d;}
+  .btn-ghost{border:1px solid var(--line); color:var(--paper);}
+  .btn-ghost:hover{border-color:var(--cyan); color:var(--cyan);}
+
+  /* SECTION SCAFFOLDING */
+  section{padding:56px 0; border-top:1px solid var(--line);}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--amber); margin-bottom:10px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::after{content:''; flex:1; height:1px; background:var(--line);}
+  h2.section-title{font-size:clamp(22px,3vw,28px); font-weight:600; margin-bottom:24px; font-family:'Inter',sans-serif;}
+
+  /* MODULE CARD (experience) */
+  .module{
+    background:var(--panel); border:1px solid var(--line); border-radius:6px;
+    padding:24px 26px; margin-bottom:16px;
+  }
+  .module-head{display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:6px;}
+  .module-title{font-weight:600; font-size:17px;}
+  .module-meta{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--steel);}
+  .module ul{margin-top:12px; padding-left:20px; color:#C9C3B6; font-size:14.5px;}
+  .module li{margin-bottom:8px;}
+  .module li::marker{color:var(--cyan);}
+
+  /* FEATURED PROJECT PANEL */
+  .project-panel{
+    background:linear-gradient(155deg, var(--panel-2), var(--panel));
+    border:1px solid var(--line); border-radius:8px; padding:30px;
+    position:relative; overflow:hidden;
+  }
+  .project-panel::before{
+    content:'CTRL-TWR'; position:absolute; top:14px; right:18px;
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em;
+    color:var(--steel); opacity:0.6;
+  }
+  .project-tag{
+    display:inline-block; font-family:'JetBrains Mono', monospace; font-size:11px;
+    letter-spacing:0.08em; text-transform:uppercase; color:var(--cyan);
+    border:1px solid rgba(95,184,184,0.35); padding:4px 10px; border-radius:20px; margin-bottom:14px;
+  }
+  .project-panel h3{font-size:20px; font-weight:600; margin-bottom:10px;}
+  .project-panel p{color:#C9C3B6; font-size:14.5px; margin-bottom:14px;}
+  .stat-row{display:flex; gap:28px; flex-wrap:wrap; margin-top:18px; padding-top:18px; border-top:1px solid var(--line);}
+  .stat .num{font-family:'JetBrains Mono', monospace; font-size:22px; color:var(--amber); font-weight:700;}
+  .stat .lbl{font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--steel); margin-top:2px;}
+
+  /* SKILLS */
+  .skill-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:14px;}
+  .skill-group{border:1px solid var(--line); border-radius:6px; padding:16px 18px; background:var(--panel);}
+  .skill-group .grp-label{font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cyan); margin-bottom:10px;}
+  .chips{display:flex; flex-wrap:wrap; gap:6px;}
+  .chip{font-family:'JetBrains Mono', monospace; font-size:12px; background:rgba(232,163,61,0.08); border:1px solid rgba(232,163,61,0.25); color:var(--paper); padding:4px 9px; border-radius:4px;}
+
+  /* EDUCATION */
+  .edu-row{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:baseline;}
+  .edu-row .deg{font-weight:600; font-size:15.5px;}
+  .edu-row .meta{font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--steel);}
+
+  /* CONTACT / FOOTER */
+  footer{padding:56px 0 60px; border-top:1px solid var(--line);}
+  .contact-panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:32px; text-align:center;
+  }
+  .contact-panel h2{font-size:24px; margin-bottom:10px;}
+  .contact-panel p{color:var(--steel); font-size:14px; margin-bottom:22px;}
+  .contact-links{display:flex; justify-content:center; gap:16px; flex-wrap:wrap;}
+  .footnote{margin-top:36px; text-align:center; font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--steel); letter-spacing:0.04em;}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-id">NAVEEN<span>_</span>NANDAM<span class="hide-sm">.log</span></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#project">Project</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none;" id="about">
+    <div class="status-line"><span class="dot" aria-hidden="true"></span> SYSTEM STATUS: OPEN TO WORK</div>
+    <h1 class="name">NAVEEN NANDAM</h1>
+    <p class="role">Backend Software Engineer — <span class="accent">Java / Spring Boot</span></p>
+
+    <div class="readout">
+      <div class="field">
+        <div class="label">Experience</div>
+        <div class="val">1.5 YRS</div>
+      </div>
+      <div class="field">
+        <div class="label">Last Deployed At</div>
+        <div class="val">Infosys Ltd.</div>
+      </div>
+      <div class="field">
+        <div class="label">Base Location</div>
+        <div class="val">Hyderabad / Bengaluru</div>
+      </div>
+    </div>
+
+    <p class="summary">Backend engineer with hands-on experience building and supporting Java &amp; Spring Boot components for a large-scale, global manufacturing client. Comfortable with REST APIs, microservices concepts, and production support in Agile teams — grounded in a strong object-oriented programming foundation.</p>
+
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:nandamnaveen7@gmail.com">Email Me</a>
+      <a class="btn btn-ghost" href="tel:+917997090796">+91-7997090796</a>
+      <a class="btn btn-ghost" href="#" data-linkedin>LinkedIn Profile</a>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="eyebrow">Work Log</div>
+    <h2 class="section-title">Experience</h2>
+
+    <div class="module">
+      <div class="module-head">
+        <div class="module-title">Infosys Limited</div>
+        <div class="module-meta">HYDERABAD, INDIA</div>
+      </div>
+      <ul>
+        <li>Completed an intensive Technical Foundation Program at Infosys Mysore, building hands-on skills in Java and Spring Boot before moving into project delivery.</li>
+        <li>Contributed as a backend developer on a custom control tower application for a global beverage manufacturing client, supporting decentralized planning across 17+ manufacturing plants worldwide.</li>
+        <li>Developed and maintained backend modules in Java and Spring Boot, supporting business logic that replaced a costly, inflexible third-party SaaS solution.</li>
+        <li>Collaborated with cross-functional teammates to translate business requirements into functional backend components, improving planning flexibility for the client.</li>
+        <li>Followed Agile practices — sprint planning, code reviews, and daily stand-ups — to support timely, quality delivery.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FEATURED PROJECT -->
+  <section id="project">
+    <div class="eyebrow">Featured Build</div>
+    <h2 class="section-title">Project</h2>
+
+    <div class="project-panel">
+      <span class="project-tag">Control Tower System</span>
+      <h3>AL Command Center — Global Beverage Manufacturer</h3>
+      <p>Built a custom control tower application for a client operating 17+ plants globally under a decentralized planning model — an in-house replacement for a third-party SaaS tool that was costly to license and inflexible to scale.</p>
+      <p>Developed backend services and APIs in Java and Spring Boot to support planning and monitoring workflows across manufacturing facilities.</p>
+      <div class="stat-row">
+        <div class="stat"><div class="num">17+</div><div class="lbl">Plants Supported</div></div>
+        <div class="stat"><div class="num">Java</div><div class="lbl">Core Language</div></div>
+        <div class="stat"><div class="num">Spring Boot</div><div class="lbl">Framework</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="eyebrow">Stack</div>
+    <h2 class="section-title">Skills</h2>
+    <div class="skill-grid">
+      <div class="skill-group">
+        <div class="grp-label">Languages</div>
+        <div class="chips"><span class="chip">Java</span><span class="chip">SQL</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="grp-label">Frameworks</div>
+        <div class="chips"><span class="chip">Spring Boot</span><span class="chip">Spring Framework</span><span class="chip">REST APIs</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="grp-label">Concepts</div>
+        <div class="chips"><span class="chip">OOP</span><span class="chip">Microservices</span><span class="chip">Backend Dev</span><span class="chip">Agile</span></div>
+      </div>
+      <div class="skill-group">
+        <div class="grp-label">Tools</div>
+        <div class="chips"><span class="chip">Git</span><span class="chip">IntelliJ / Eclipse</span><span class="chip">Maven</span><span class="chip">Postman</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="eyebrow">Background</div>
+    <h2 class="section-title">Education</h2>
+    <div class="module">
+      <div class="edu-row">
+        <div class="deg">Bachelor of Science, Computer Science</div>
+        <div class="meta">GRADUATED 2022 · SCORE 70%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <footer id="contact">
+    <div class="contact-panel">
+      <h2>Let's connect</h2>
+      <p>Open to Backend Developer, Java Software Engineer &amp; System Engineer roles in Hyderabad and Bengaluru.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:nandamnaveen7@gmail.com">nandamnaveen7@gmail.com</a>
+        <a class="btn btn-ghost" href="tel:+917997090796">+91-7997090796</a>
+        <a class="btn btn-ghost" href="#" data-linkedin>LinkedIn</a>
+      </div>
+    </div>
+    <div class="footnote">NAVEEN_NANDAM.log — LAST UPDATED 2026</div>
+  </footer>
+
+</main>
+
+</body>
+</html>
